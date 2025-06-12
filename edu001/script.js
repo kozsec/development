@@ -5,7 +5,7 @@ let budget = 100;
 let maxYear = 5;
 let situationIndex = 0;
 let interval;
-let selectedActions = [];
+let selectedActions = {}; // { 対策名: レベル }
 
 function showScreen(id) {
   document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
@@ -17,7 +17,7 @@ function startGame() {
   score = 100;
   year = 1;
   budget = 100;
-  selectedActions = [];
+  selectedActions = {};
   document.getElementById('log').innerHTML = '';
   fetch('data.json')
     .then(res => res.json())
@@ -25,7 +25,7 @@ function startGame() {
       data = json;
       updateUI();
       log("ゲーム開始！");
-      interval = setInterval(nextTurn, 60000); // 本番は60000、開発中なら 5000
+      interval = setInterval(nextTurn, 60000); // 開発中は 5000 にしてもOK
       nextTurn();
     });
 }
@@ -37,25 +37,29 @@ function updateUI() {
 
   const list = document.getElementById('selected-actions');
   list.innerHTML = "";
-  selectedActions.forEach(action => {
+  for (let [name, level] of Object.entries(selectedActions)) {
     const li = document.createElement("li");
-    li.textContent = action;
+    li.textContent = `${name}（Lv.${level}）`;
     list.appendChild(li);
-  });
+  }
 
   const choices = document.getElementById('choices');
   choices.innerHTML = "";
   data.actions.forEach(act => {
+    const level = selectedActions[act.name] || 0;
     const btn = document.createElement("button");
     btn.className = "choice-btn";
-    btn.textContent = `${act.name}（¥${act.cost}万）`;
+    btn.textContent = `${act.name}（Lv.${level} / 5） - ¥${act.cost}`;
+    btn.disabled = level >= 5;
     btn.onclick = () => {
-      if (budget >= act.cost) {
-        budget -= act.cost;
-        selectedActions.push(act.name);
-        updateUI();
-      } else {
-        log("予算が足りません！");
+      if (level < 5) {
+        if (budget >= act.cost) {
+          budget -= act.cost;
+          selectedActions[act.name] = level + 1;
+          updateUI();
+        } else {
+          log("予算が足りません！");
+        }
       }
     };
     choices.appendChild(btn);
@@ -82,17 +86,23 @@ function nextTurn() {
   log(`【状況】${situation.text}`);
 
   if (situation.type === "attack") {
-    if (selectedActions.includes(situation.answer)) {
-      log("→ 対策により攻撃を防げました！");
+    const level = selectedActions[situation.answer] || 0;
+    if (level >= (situation.requiredLevel || 1)) {
+      log(`→ 「${situation.answer}」Lv.${level}で防御成功！`);
     } else {
-      log("→ 攻撃成功。スコア -15");
+      log(`→ 防御失敗。必要Lv.${situation.requiredLevel}、現在Lv.${level} → スコア -15`);
       score -= 15;
     }
   }
 
-  if (situation.type === "warning" && !selectedActions.includes(situation.answer)) {
-    log("→ 無視すると危険！スコア -5");
-    score -= 5;
+  if (situation.type === "warning") {
+    const level = selectedActions[situation.answer] || 0;
+    if (level < (situation.requiredLevel || 1)) {
+      log(`→ 対策不足。必要Lv.${situation.requiredLevel} → スコア -5`);
+      score -= 5;
+    } else {
+      log("→ 警告に適切に対応済み。");
+    }
   }
 
   year++;

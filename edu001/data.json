@@ -1,15 +1,14 @@
 {
-    "situations": [
-      { "text": "不審なメールが届きました。", "type": "attack", "answer": "メールフィルタ導入" },
-      { "text": "システムのログに異常があります。", "type": "warning", "answer": "ログ監視ツール導入" },
-      { "text": "平穏な1日です。", "type": "dummy", "answer": "" },
-      { "text": "ランサムウェア攻撃が始まりました。", "type": "attack", "answer": "バックアップ対策" }
-    ],
-    "actions": [
-      { "name": "メールフィルタ導入", "cost": 30 },
-      { "name": "ログ監視ツール導入", "cost": 20 },
-      { "name": "USB禁止ポリシー", "cost": 10 },
-      { "name": "バックアップ対策", "cost": 40 }
-    ]
-  }
-  
+  "situations": [
+    { "text": "不審なメールが届きました。", "type": "attack", "answer": "メールフィルタ導入", "requiredLevel": 3 },
+    { "text": "システムのログに異常があります。", "type": "warning", "answer": "ログ監視ツール導入", "requiredLevel": 2 },
+    { "text": "平穏な1日です。", "type": "dummy" },
+    { "text": "ランサムウェア攻撃が始まりました。", "type": "attack", "answer": "バックアップ対策", "requiredLevel": 4 }
+  ],
+  "actions": [
+    { "name": "メールフィルタ導入", "cost": 10 },
+    { "name": "ログ監視ツール導入", "cost": 10 },
+    { "name": "USB禁止ポリシー", "cost": 10 },
+    { "name": "バックアップ対策", "cost": 10 }
+  ]
+}
