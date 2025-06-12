@@ -1,40 +1,47 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Cyber Security Simulator</title>
-  <link rel="stylesheet" href="style.css" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>セキュリティ教育ゲーム</title>
+<link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div id="start-screen" class="screen active">
-    <div class="overlay">
-      <h1>Cyber Security Simulator</h1>
-      <button onclick="showScreen('howto-screen')">遊び方</button>
-      <button onclick="startGame()">ゲームスタート</button>
-    </div>
-  </div>
+<div id="start-screen" class="screen">
+  <div class="background-image"></div>
+  <button id="start-btn">ゲームスタート</button>
+  <button id="howto-btn">遊び方説明</button>
+</div>
 
-  <div id="howto-screen" class="screen">
-    <div class="instructions">
-      <h2>遊び方</h2>
-      <p>このゲームは、サイバー攻撃の状況に対応して最適な対策を選ぶシミュレーターです。</p>
-      <ul>
-        <li>1分ごとに1年が経過し、全5年で終了</li>
-        <li>予算内で対策を選び、5段階まで強化可能</li>
-        <li>適切なレベルで攻撃を防ぐとスコア加点、失敗すると減点</li>
-      </ul>
-      <button onclick="startGame()">ゲームスタート</button>
+<div id="howto-screen" class="screen" style="display:none;">
+  <div class="background-image"></div>
+  <div class="howto-table">
+    <h2>遊び方</h2>
+    <p>このゲームはセキュリティ教育を目的としています。<br>
+      ゲームは5年間、1分ごとに1年が進みます。<br>
+      毎年予算が追加され、サイバー攻撃への対策を強化してください。<br>
+      攻撃を防げなければスコアが減ります。<br>
+      対策は5段階まで強化可能です。<br>
+      5分間でどれだけ高いスコアを獲得できるか挑戦しましょう！</p>
+    <div class="howto-scroll">
+      <p>セキュリティ対策のボタンをクリックして強化し、予算を使い切らないように注意してください。</p>
+      <p>攻撃の状況付与は黄色の太字で表示されます。</p>
+      <p>プレイヤーの行動や状況付与の時間もコメント欄に記録されます。</p>
+      <p>ゲーム開始ボタンでプレイ画面へ移動します。</p>
     </div>
+    <button id="start-from-howto">ゲームスタート</button>
   </div>
+</div>
 
-  <div id="game-screen" class="screen">
-    <div class="game-area">
-      <div class="left-panel">
-        <h3>対策選択</h3>
+<div id="game-screen" class="screen" style="display:none;">
+  <div class="game-container">
+    <div class="play-area">
+      <div id="left-panel" class="left-panel">
+        <h3>セキュリティ対策を強化</h3>
         <div id="choices"></div>
       </div>
-      <div class="right-panel">
+      <div id="right-panel" class="right-panel">
+        <h3>残り時間: <span id="timer">05:00</span></h3>
         <h3>ステータス</h3>
         <p>年度: <span id="year">1</span> / 5</p>
         <p>予算: ¥<span id="budget">100</span> 万</p>
@@ -47,16 +54,15 @@
     </div>
     <div class="log-console" id="log"></div>
   </div>
+</div>
 
-  <div id="result-screen" class="screen">
-    <div class="overlay">
-      <h2>ゲーム終了</h2>
-      <p>あなたのスコアは...</p>
-      <h1 id="final-score">0 点</h1>
-      <button onclick="location.reload()">もう一度プレイ</button>
-    </div>
-  </div>
+<div id="result-screen" class="screen" style="display:none;">
+  <h1>ゲーム終了</h1>
+  <p>あなたのスコアは</p>
+  <p id="final-score" style="font-size:3em; font-weight:bold;"></p>
+  <button id="restart-btn">もう一度遊ぶ</button>
+</div>
 
-  <script src="script.js"></script>
+<script src="script.js"></script>
 </body>
 </html>

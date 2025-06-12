@@ -1,14 +1,19 @@
 {
-  "situations": [
-    { "text": "不審なメールが届きました。", "type": "attack", "answer": "メールフィルタ導入", "requiredLevel": 3 },
-    { "text": "システムのログに異常があります。", "type": "warning", "answer": "ログ監視ツール導入", "requiredLevel": 2 },
-    { "text": "平穏な1日です。", "type": "dummy" },
-    { "text": "ランサムウェア攻撃が始まりました。", "type": "attack", "answer": "バックアップ対策", "requiredLevel": 4 }
-  ],
   "actions": [
-    { "name": "メールフィルタ導入", "cost": 10 },
-    { "name": "ログ監視ツール導入", "cost": 10 },
-    { "name": "USB禁止ポリシー", "cost": 10 },
-    { "name": "バックアップ対策", "cost": 10 }
+    {"name": "ファイアウォール強化", "cost": 20},
+    {"name": "ウイルス対策ソフト更新", "cost": 15},
+    {"name": "パスワードポリシー厳格化", "cost": 10},
+    {"name": "社員教育", "cost": 10},
+    {"name": "侵入検知システム導入", "cost": 25}
+  ],
+  "situations": [
+    {"text": "怪しいメールが届いた。", "type": "warning", "answer": "社員教育", "requiredLevel": 3},
+    {"text": "未知のマルウェアが検出された。", "type": "attack", "answer": "ウイルス対策ソフト更新", "requiredLevel": 4},
+    {"text": "外部から不正アクセスの痕跡がある。", "type": "attack", "answer": "侵入検知システム導入", "requiredLevel": 3},
+    {"text": "パスワードが複雑でないアカウントが見つかった。", "type": "warning", "answer": "パスワードポリシー厳格化", "requiredLevel": 4},
+    {"text": "ファイアウォールの脆弱性が報告された。", "type": "attack", "answer": "ファイアウォール強化", "requiredLevel": 5},
+    {"text": "社内ネットワークの通信が増加している。", "type": "warning", "answer": "侵入検知システム導入", "requiredLevel": 2},
+    {"text": "定期メンテナンスでシステムを停止。", "type": "dummy"},
+    {"text": "ランダムなネットワークトラフィックの増減。", "type": "dummy"}
   ]
 }
